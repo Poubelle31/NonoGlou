@@ -88,20 +88,28 @@
     renderWeek();
   }
 
-  function renderWeek() {
+  // Une rangée de 7 barres. offset = 0 : les 7 derniers jours ; offset = 1 : les 7 jours d'avant.
+  function renderRow(listId, totalId, offset) {
     const letters = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
-    const ol = $('week');
+    const ol = $(listId);
     ol.innerHTML = '';
+    let total = 0;
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
-      d.setDate(d.getDate() - i);
+      d.setDate(d.getDate() - i - offset * 7);
       const n = state.days[dayKey(d)] || 0;
+      total += n;
       const li = document.createElement('li');
-      if (i === 0) li.className = 'today';
-      li.title = `${n} verre${n > 1 ? 's' : ''}`;
-      li.innerHTML = `<div class="bar"><i style="--h:${Math.min(n / GOAL, 1) * 100}%"></i></div><span>${letters[d.getDay()]}</span>`;
+      if (i === 0 && offset === 0) li.className = 'today';
+      li.innerHTML = `<b>${n}</b><div class="bar"><i style="--h:${Math.min(n / GOAL, 1) * 100}%"></i></div><span>${letters[d.getDay()]}</span>`;
       ol.appendChild(li);
     }
+    $(totalId).textContent = `${total} verre${total > 1 ? 's' : ''}`;
+  }
+
+  function renderWeek() {
+    renderRow('week', 'totalThis', 0);
+    renderRow('lastWeek', 'totalLast', 1);
   }
 
   // ---------- Interactions ----------

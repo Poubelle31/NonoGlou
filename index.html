@@ -72,9 +72,18 @@
       <button class="ghost" id="undo">Annuler le dernier verre</button>
     </div>
 
-    <section class="week" aria-label="Les 7 derniers jours">
-      <h2>Ta semaine</h2>
+    <section class="week" aria-label="Historique">
+      <div class="week-head">
+        <h2>Ta semaine</h2>
+        <span id="totalThis"></span>
+      </div>
       <ol id="week"></ol>
+
+      <div class="week-head past">
+        <h2>Semaine dernière</h2>
+        <span id="totalLast"></span>
+      </div>
+      <ol id="lastWeek" class="past"></ol>
     </section>
   </main>
 
