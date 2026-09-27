@@ -1,4 +1,4 @@
-const CACHE = 'glouglou-v1';
+const CACHE = 'glouglou-v3';
 const ASSETS = [
   './', 'index.html', 'style.css', 'app.js', 'config.js', 'manifest.webmanifest',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',
@@ -21,8 +21,10 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  // no-cache : on redemande toujours au serveur s'il y a une version plus récente.
+  const fresh = req.mode === 'navigate' ? fetch(req) : fetch(req, { cache: 'no-cache' });
   event.respondWith(
-    fetch(req)
+    fresh
       .then((res) => {
         const copy = res.clone();
         caches.open(CACHE).then((c) => c.put(req, copy));

@@ -160,7 +160,7 @@ button { font: inherit; cursor: pointer; }
   justify-content: space-between;
   margin-bottom: 12px;
 }
-.week-head.past { margin-top: 24px; }
+.week-head.past { margin-top: 44px; }
 .week h2 { margin: 0; font-size: 1rem; font-weight: 600; color: var(--ink-soft); }
 .week-head span { font-size: .9rem; color: var(--ink-soft); }
 .week ol.past .bar i { opacity: .6; }
