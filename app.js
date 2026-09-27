@@ -42,9 +42,9 @@
   function moodText(n, source) {
     if (n >= GOAL) return 'Objectif atteint, bravo ✨';
     if (source === 'reminder') return 'Verre compté, merci pour ta goutte 💧';
-    if (n === 0) return 'Ta goutte est toute sèche…';
-    if (n <= 2) return "C'est un bon début, continue !";
-    if (n <= 4) return 'Ça remonte, bien joué';
+    if (n === 0) return "Tiens, il faudrait pas boire un peu d'eau?";
+    if (n <= 2) return "Et non ! ça suffit pas même si tu bois du matcha...";
+    if (n <= 4) return "Bravo😊, t'as déjà moins mal à la tête non?";
     return 'Presque pleine !';
   }
 
