@@ -1,0 +1,16 @@
+{
+  "name": "Glouglou",
+  "short_name": "Glouglou",
+  "description": "Des petits rappels pour boire de l'eau",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#E6F4FA",
+  "theme_color": "#E6F4FA",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Glouglou">
+  <meta name="theme-color" content="#E6F4FA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0C202D" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="style.css">
+  <title>Glouglou</title>
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <p class="hello" id="hello">Coucou 💧</p>
+      <button class="icon-btn" id="openSettings" aria-label="Réglages des rappels">🔔</button>
+    </header>
+
+    <button class="drop" id="drop" aria-label="J'ai bu un verre">
+      <svg viewBox="0 0 200 260" aria-hidden="true">
+        <defs>
+          <clipPath id="dropClip">
+            <path d="M100 8 C60 70 20 115 20 165 A80 80 0 0 0 180 165 C180 115 140 70 100 8 Z"/>
+          </clipPath>
+        </defs>
+
+        <path class="drop-body" d="M100 8 C60 70 20 115 20 165 A80 80 0 0 0 180 165 C180 115 140 70 100 8 Z"/>
+
+        <g clip-path="url(#dropClip)">
+          <g id="level" style="transform: translateY(250px)">
+            <path class="wave wave-back" d="M0 10 Q25 0 50 10 T100 10 T150 10 T200 10 T250 10 T300 10 T350 10 T400 10 V300 H0 Z"/>
+            <path class="wave wave-front" d="M0 14 Q25 4 50 14 T100 14 T150 14 T200 14 T250 14 T300 14 T350 14 T400 14 V300 H0 Z"/>
+          </g>
+        </g>
+
+        <path class="drop-outline" d="M100 8 C60 70 20 115 20 165 A80 80 0 0 0 180 165 C180 115 140 70 100 8 Z"/>
+
+        <g class="face">
+          <g id="eyesOpen">
+            <circle class="eye" cx="78" cy="158" r="6.5"/>
+            <circle class="eye" cx="122" cy="158" r="6.5"/>
+          </g>
+          <g id="eyesHappy" hidden>
+            <path class="line" d="M70 161 Q78 150 86 161"/>
+            <path class="line" d="M114 161 Q122 150 130 161"/>
+          </g>
+          <ellipse class="cheek" cx="64" cy="176" rx="9" ry="6"/>
+          <ellipse class="cheek" cx="136" cy="176" rx="9" ry="6"/>
+          <path id="mouth" class="line" d="M88 186 Q100 177 112 186"/>
+        </g>
+
+        <g class="sparkles">
+          <path class="sparkle" d="M14 52 Q14 64 26 64 Q14 64 14 76 Q14 64 2 64 Q14 64 14 52 Z"/>
+          <path class="sparkle" d="M186 84 Q186 94 196 94 Q186 94 186 104 Q186 94 176 94 Q186 94 186 84 Z"/>
+          <path class="sparkle" d="M6 200 Q6 208 14 208 Q6 208 6 216 Q6 208 -2 208 Q6 208 6 200 Z"/>
+          <path class="sparkle" d="M192 214 Q192 224 202 224 Q192 224 192 234 Q192 224 182 224 Q192 224 192 214 Z"/>
+        </g>
+      </svg>
+    </button>
+
+    <p class="count"><span id="count">0</span> <small>sur <span id="goal">8</span> verres</small></p>
+    <p class="mood" id="mood" aria-live="polite"></p>
+
+    <div class="actions">
+      <button class="primary" id="add">J'ai bu un verre</button>
+      <button class="ghost" id="undo">Annuler le dernier verre</button>
+    </div>
+
+    <section class="week" aria-label="Les 7 derniers jours">
+      <h2>Ta semaine</h2>
+      <ol id="week"></ol>
+    </section>
+  </main>
+
+  <dialog id="settings">
+    <h2>Rappels</h2>
+
+    <p id="installHint" class="hint" hidden>
+      Ajoute d'abord Glouglou à ton écran d'accueil : touche le bouton Partager de Safari,
+      puis « Sur l'écran d'accueil ». Ouvre ensuite l'app depuis sa nouvelle icône.
+    </p>
+
+    <p>Une petite notification toutes les 1h30, de 9h à 21h.</p>
+    <button class="primary" id="enable">Activer les rappels</button>
+    <p class="status" id="status" aria-live="polite"></p>
+
+    <div id="codeBlock" hidden>
+      <p>Envoie ce code à Antoine 💌</p>
+      <textarea id="code" rows="4" readonly></textarea>
+      <button class="secondary" id="copy">Copier le code</button>
+    </div>
+
+    <button class="ghost" id="closeSettings">Fermer</button>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
