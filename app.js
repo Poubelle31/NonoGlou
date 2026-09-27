@@ -40,12 +40,12 @@
   };
 
   function moodText(n, source) {
-    if (n >= GOAL) return 'Objectif atteint, bravo ✨';
+    if (n >= GOAL) return "Bravo! Tu es une marmotte hydratée 🥰";
     if (source === 'reminder') return 'Verre compté, merci pour ta goutte 💧';
     if (n === 0) return "Tiens, il faudrait pas boire un peu d'eau?";
     if (n <= 2) return "Et non ! ça suffit pas même si tu bois du matcha...";
     if (n <= 4) return "Bravo😊, t'as déjà moins mal à la tête non?";
-    return 'Presque pleine !';
+    return "Aller encore un peu plus 😉";
   }
 
   function greeting() {
