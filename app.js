@@ -50,9 +50,9 @@
 
   function greeting() {
     const h = new Date().getHours();
-    if (h < 12) return 'Bonjour 💧';
-    if (h < 18) return 'Bon après-midi 💧';
-    return 'Bonsoir 💧';
+    if (h < 12) return 'Coucou du matin ☀️';
+    if (h < 18) return 'Coucou de l'après-midi 🤓';
+    return 'Coucou du soir ✨';
   }
 
   function render(source) {
