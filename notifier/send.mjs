@@ -1,14 +1,13 @@
 import webpush from 'web-push';
 
 const {
-  VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_CONTACT, PUSH_SUBSCRIPTION, TRIGGER,
+  VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, VAPID_CONTACT, PUSH_SUBSCRIPTION, FORCE,
 } = process.env;
 
-// Chaque créneau existe deux fois dans le workflow (GitHub ne connaît que l'heure UTC) :
-// une version pour l'heure d'été (UTC+2) et une pour l'heure d'hiver (UTC+1).
-// On n'envoie que celle qui correspond à la saison en cours.
-const ETE = new Set(['0 7,10,13,16,19 * * *', '30 8,11,14,17 * * *']);
-const HIVER = new Set(['0 8,11,14,17,20 * * *', '30 9,12,15,18 * * *']);
+// Plage horaire autorisée, heure de Paris (été comme hiver).
+// Sécurité : même si un déclenchement arrive en retard, aucun rappel ne part la nuit.
+const DEBUT = 9;   // pas de rappel avant 9h00
+const FIN = 21;    // dernier rappel à 21h (tolérance de 15 minutes)
 
 // Personnalise librement ces messages 💌
 const MESSAGES = [
@@ -24,18 +23,20 @@ const MESSAGES = [
   'Glou, glou, glou… 🐟',
 ];
 
-function parisOffset(date = new Date()) {
-  const tz = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Paris', timeZoneName: 'shortOffset' })
-    .formatToParts(date).find((p) => p.type === 'timeZoneName').value; // ex. "GMT+2"
-  return Number(tz.replace('GMT', '')) || 0;
+function heureDeParis(date = new Date()) {
+  const parts = new Intl.DateTimeFormat('fr-FR', {
+    timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+  }).formatToParts(date);
+  const get = (type) => Number(parts.find((p) => p.type === type).value);
+  return { h: get('hour'), m: get('minute') };
 }
 
-if (TRIGGER) {
-  const offset = parisOffset();
-  if ((ETE.has(TRIGGER) && offset !== 2) || (HIVER.has(TRIGGER) && offset !== 1)) {
-    console.log(`Créneau "${TRIGGER}" ignoré (heure de Paris actuelle : UTC+${offset}).`);
-    process.exit(0);
-  }
+const { h, m } = heureDeParis();
+const dansLaPlage = h >= DEBUT && (h < FIN || (h === FIN && m <= 15));
+
+if (!dansLaPlage && FORCE !== 'true') {
+  console.log(`Il est ${h}h${String(m).padStart(2, '0')} à Paris : hors de la plage ${DEBUT}h–${FIN}h, pas de rappel.`);
+  process.exit(0);
 }
 
 if (!VAPID_PUBLIC_KEY || !VAPID_PRIVATE_KEY || !VAPID_CONTACT || !PUSH_SUBSCRIPTION) {
@@ -50,7 +51,7 @@ const payload = JSON.stringify({ title, body: 'Touche la notification une fois t
 
 try {
   const res = await webpush.sendNotification(JSON.parse(PUSH_SUBSCRIPTION), payload, {
-    TTL: 3600,        // un rappel non reçu dans l'heure est abandonné
+    TTL: 1800,        // un rappel non reçu dans la demi-heure est abandonné
     urgency: 'normal',
   });
   console.log(`Rappel envoyé (${res.statusCode}) : ${title}`);
