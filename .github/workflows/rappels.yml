@@ -1,52 +1,44 @@
 name: Rappels Glouglou
-
+ 
+# Déclenché toutes les heures par cron-job.org (plus fiable que le planificateur de GitHub),
+# ou à la main avec le bouton "Run workflow".
 on:
-  schedule:
-    # Heure d'été (Paris = UTC+2) : 9h00, 10h30, 12h00, 13h30, 15h00, 16h30, 18h00, 19h30, 21h00
-    - cron: '0 7,10,13,16,19 * * *'
-    - cron: '30 8,11,14,17 * * *'
-    # Heure d'hiver (Paris = UTC+1) : mêmes heures locales
-    - cron: '0 8,11,14,17,20 * * *'
-    - cron: '30 9,12,15,18 * * *'
-  workflow_dispatch: # bouton "Run workflow" pour envoyer un rappel de test
-
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Envoyer même en dehors de 9h–21h (pour tester)"
+        type: boolean
+        default: false
+ 
 permissions:
   contents: read
-  actions: write
-
+ 
 concurrency:
   group: rappels
   cancel-in-progress: false
-
+ 
 jobs:
   envoyer:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+ 
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
-
+ 
       - name: Installer
         working-directory: notifier
         run: npm install --no-audit --no-fund
-
+ 
       - name: Envoyer le rappel
         working-directory: notifier
         run: node send.mjs
         env:
-          TRIGGER: ${{ github.event.schedule }}
+          FORCE: ${{ inputs.test }}
           VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           VAPID_CONTACT: ${{ secrets.VAPID_CONTACT }}
           PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
-
-      # GitHub met en pause les workflows programmés d'un dépôt public inactif depuis 60 jours.
-      # Cet appel les maintient actifs.
-      - name: Garder les rappels actifs
-        if: always()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/rappels.yml/enable"
+ 
