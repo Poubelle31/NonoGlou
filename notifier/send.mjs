@@ -13,12 +13,12 @@ const FIN = 21;    // dernier rappel à 21h (tolérance de 15 minutes)
 const MESSAGES = [
   'Petite gorgée ? 💧',
   'Ta goutte a soif… et toi aussi 🥺',
-  "Un verre d'eau et tu redeviens invincible ✨",
-  'Pause glouglou ! 🫧',
+  "Il y a pas un verre d'eau qui traine dans l'appart? ✨",
+  "sors ta paille, c'est l'heure de boire",
   "Quelqu'un pense à toi… et à ton hydratation 💙",
-  "Trois gorgées, c'est cadeau 🎁",
-  'Ta peau te dira merci 🌸',
-  "Eau secours ! C'est l'heure de boire 🚨",
+  "ça sent la Nono déshydratée... ",
+  "Coucou, c'est ton relou de mec qui te dit de boire ❤️",
+  "Aller, encore un pour la route 😉",
   "Un verre pour moi, s'il te plaît 🙏",
   'Glou, glou, glou… 🐟',
 ];
